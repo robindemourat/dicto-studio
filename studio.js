@@ -85,6 +85,7 @@ ${sub.text}
       }, '').trim();
       return fs.writeFile(output, srt, 'utf8')
     })
+    .then(() => fs.ensureDir(`output/${composition.metadata.title}/tmp/`))
     .then(() => {
       console.log('converting chunks :: starting');
       return playlist.reduce((cur1, {start, end, content, media, id}, chunkIndex) => cur1.then(() => new Promise((res1, rej1) => {
@@ -114,7 +115,7 @@ ${sub.text}
       console.log('merging chunks');
       return new Promise((res1, rej1) => {
         const mergedVideo = playlist.reduce((fn, {id}) => {
-          fn.addInput(`output/${composition.metadata.title}/chunks/${id}.mp4`);
+          fn.input(`output/${composition.metadata.title}/chunks/${id}.mp4`);
           return fn;
         }, ffmpeg())
 
