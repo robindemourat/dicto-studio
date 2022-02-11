@@ -91,7 +91,7 @@ ${sub.text}
         console.log('converting chunk %s/%s', chunkIndex + 1, playlist.length);
         ffmpeg(media)
         .setStartTime(start)
-        .setDuration(end)
+        .setDuration(end - start)
         .output(`output/${composition.metadata.title}/chunks/${id}.mp4`)
         .on('end', function(err) {
           console.log('done converting chunk %s/%s', chunkIndex + 1, playlist.length)
