@@ -118,9 +118,10 @@ ${sub.text}
           fn.input(`output/${composition.metadata.title}/chunks/${id}.mp4`);
           return fn;
         }, ffmpeg())
+        console.log('all inputs are added');
 
         mergedVideo
-        .mergeToFile(`output/${composition.metadata.title}/${composition.metadata.title}.mp4`, `output/${composition.metadata.title}/tmp/`)
+        // .output(`output/${composition.metadata.title}/${composition.metadata.title}.mp4`)
         .on('end', function(err) {
           console.log('done merging')
           if(!err) { 
@@ -135,7 +136,8 @@ ${sub.text}
           console.log('error: ', err);
           rej1(err);
         })
-        .run();
+        .mergeToFile(`output/${composition.metadata.title}/${composition.metadata.title}.mp4`, `output/${composition.metadata.title}/tmp/`)
+        
       })
     })
     // cleaning stuff
