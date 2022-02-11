@@ -113,11 +113,13 @@ ${sub.text}
     .then(() => {
       console.log('merging chunks');
       return new Promise((res1, rej1) => {
-        playlist.reduce((fn, {id}) => {
-          fn.mergeAdd(`output/${composition.metadata.title}/chunks/${id}.mp4`);
+        const mergedVideo = playlist.reduce((fn, {id}) => {
+          fn.addInput(`output/${composition.metadata.title}/chunks/${id}.mp4`);
           return fn;
         }, ffmpeg())
-        .output(`output/${composition.metadata.title}/${composition.metadata.title}.mp4`)
+
+        mergedVideo
+        .mergeToFile(`output/${composition.metadata.title}/${composition.metadata.title}.mp4`, `output/${composition.metadata.title}/tmp/`)
         .on('end', function(err) {
           console.log('done merging')
           if(!err) { 
@@ -139,6 +141,10 @@ ${sub.text}
     .then(() => {
       console.log('removing stuff');
       return fs.remove(`output/${composition.metadata.title}/chunks`)
+    })
+    // cleaning stuff
+    .then(() => {
+      return fs.remove(`output/${composition.metadata.title}/tmp`)
     })
     .then(() => {
       console.log('all done, bye !!')
